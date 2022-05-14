@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { listReservations } from "../utils/api";
+import useQuery from "../utils/useQuery";
+import { today, previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
+import DisplayReservations from "../layout/reservations/DisplayReservations";
 
 /**
  * Defines the dashboard page.
@@ -8,9 +12,24 @@ import ErrorAlert from "../layout/ErrorAlert";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ date }) {
+function Dashboard({ date, setDate }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
+  const history = useHistory();
+  const route = useRouteMatch();
+  const query = useQuery();
+
+  useEffect(() => {
+    const updateDate = () => {
+      const date = query.get("date");
+      if (date) {
+        setDate(date);
+      } else {
+        setDate(today());
+      }
+    };
+    updateDate();
+  }, [query, setDate, route]);
 
   useEffect(loadDashboard, [date]);
 
@@ -30,7 +49,13 @@ function Dashboard({ date }) {
         <h4 className="mb-0">Reservations for date</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      {JSON.stringify(reservations)}
+
+      <DisplayReservations reservations={reservations} />
+      <button onClick={() => history.push(`?date=${previous(date)}`)}>
+        Previous
+      </button>
+      <button onClick={() => history.push(`?date=${today()}`)}>Today</button>
+      <button onClick={() => history.push(`?date=${next(date)}`)}>Next</button>
     </main>
   );
 }
