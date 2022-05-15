@@ -32,6 +32,8 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
         <label htmlFor="mobile_number">Mobile Number: </label>
         <input
           type="tel"
+          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
+          title="555-555-1234"
           id="mobile_number"
           name="mobile_number"
           value={formData.mobile_number}
@@ -52,6 +54,7 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
         <label htmlFor="reservation_time">Reservation Time: </label>
         <input
           type="time"
+          //pattern="[0-9]{2}:[0-9]{2}"
           id="reservation_time"
           name="reservation_time"
           value={formData.reservation_time}
@@ -70,8 +73,8 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
           required
         ></input>
         <br />
-        <button type="submit">Reserve</button>
-        <button type="reset" onClick={() => history.push("/")}>
+        <button className="navigate" type="submit">Reserve</button>
+        <button className="navigate" type="reset" onClick={() => history.push("/")}>
           Cancel
         </button>
       </form>

@@ -5,6 +5,7 @@ import useQuery from "../utils/useQuery";
 import { today, previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import DisplayReservations from "../layout/reservations/DisplayReservations";
+import DisplayTables from "../layout/tables/DisplayTables";
 
 /**
  * Defines the dashboard page.
@@ -46,16 +47,18 @@ function Dashboard({ date, setDate }) {
     <main>
       <h1>Dashboard</h1>
       <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for date</h4>
+        <h4 className="mb-0">Reservations for date {date}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
 
       <DisplayReservations reservations={reservations} />
-      <button class="navigate" onClick={() => history.push(`?date=${previous(date)}`)}>
+      <button className="navigate" onClick={() => history.push(`?date=${previous(date)}`)}>
         Previous
       </button>
-      <button class="navigate" onClick={() => history.push(`?date=${today()}`)}>Today</button>
-      <button class="navigate" onClick={() => history.push(`?date=${next(date)}`)}>Next</button>
+      <button className="navigate" onClick={() => history.push(`?date=${today()}`)}>Today</button>
+      <button className="navigate" onClick={() => history.push(`?date=${next(date)}`)}>Next</button>
+    
+    <DisplayTables />
     </main>
   );
 }

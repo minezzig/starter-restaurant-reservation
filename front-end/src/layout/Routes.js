@@ -7,6 +7,8 @@ import { today } from "../utils/date-time";
 import { useState } from "react";
 
 import NewReservation from "./reservations/NewReservation";
+import NewTable from "./tables/NewTable.js";
+import Search from "./Search";
 
 /**
  * Defines all the routes for the application.
@@ -32,6 +34,12 @@ function Routes() {
       </Route>
       <Route path="/reservations/new">
         <NewReservation />
+      </Route>
+      <Route path="/tables/new">
+        <NewTable />
+      </Route>
+      <Route path="/search">
+        <Search />
       </Route>
       <Route>
         <NotFound />

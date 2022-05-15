@@ -7,11 +7,14 @@ import React from "react";
  * @returns {JSX.Element}
  *  a bootstrap danger alert that contains the message string.
  */
+const myStyle = { backgroundColor: "goldenrod", color: "white", border: "2px solid black", boxShadow: "3px 3px black"};
 
 function ErrorAlert({ error }) {
   return (
     error && (
-      <div className="alert alert-danger m-2">Error: {error.message}</div>
+      <div className="alert alert-danger m-2" style={myStyle}>
+        Error: {error.message}
+      </div>
     )
   );
 }

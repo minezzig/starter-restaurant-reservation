@@ -1,8 +1,7 @@
 const reservationsService = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
-/**
- * VALIDATIONS
- */
+
+// ---------------- VALIDATIONS ---------------- //
 const validProperties = [
   "first_name",
   "last_name",
@@ -53,6 +52,17 @@ function validateDateTime(req, res, next) {
   const date = now.getFullYear() + "-" + now.getMonth() + "-" + now.getDate();
   const time = now.getHours() + ":" + now.getMinutes();
 
+  // validate if we're open
+  if (timeRequest < "10:30" || timeRequest > "21:30") {
+    if (timeRequest >= "22:30") {
+      return next({ status: 400, message: "Sorry, we're closed" });
+    }
+    return next({
+      status: 400,
+      message: "Reservations allowed between 10:30h and 21.30h",
+    });
+  }
+
   // reservation must be before present date and time
   if (
     dateRequestFormat < date ||
@@ -76,6 +86,7 @@ function validateDateTime(req, res, next) {
   next();
 }
 
+// ---------------- HTTP requests ---------------- //
 async function list(req, res) {
   const lookUpDate = req.query.date;
   if (lookUpDate) {
