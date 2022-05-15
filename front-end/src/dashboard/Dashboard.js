@@ -51,11 +51,11 @@ function Dashboard({ date, setDate }) {
       <ErrorAlert error={reservationsError} />
 
       <DisplayReservations reservations={reservations} />
-      <button onClick={() => history.push(`?date=${previous(date)}`)}>
+      <button class="navigate" onClick={() => history.push(`?date=${previous(date)}`)}>
         Previous
       </button>
-      <button onClick={() => history.push(`?date=${today()}`)}>Today</button>
-      <button onClick={() => history.push(`?date=${next(date)}`)}>Next</button>
+      <button class="navigate" onClick={() => history.push(`?date=${today()}`)}>Today</button>
+      <button class="navigate" onClick={() => history.push(`?date=${next(date)}`)}>Next</button>
     </main>
   );
 }

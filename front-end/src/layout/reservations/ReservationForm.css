@@ -1,7 +1,12 @@
-button {
-    background-color: cornflowerblue;
-    border: 2px solid black;
-    border-radius: 5px;
-    padding: 2px;
-    margin: 5px;
+.navigate {
+  background-color: cornflowerblue;
+  border: 2px solid black;
+  border-radius: 5px;
+  box-shadow: 3px 3px black;
+  transform: rotate(-1deg);
+  padding: 2px;
+  margin: 5px;
+}
+.navigate:focus {
+outline: 0;
 }

@@ -4,6 +4,7 @@ import "./ReservationForm.css";
 
 function ReservationForm({ formData, handleChange, handleSubmit }) {
   const history = useHistory();
+
   return (
     <div>
       <h5>Please fill out the form with your party's information:</h5>
@@ -30,7 +31,7 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
         <br />
         <label htmlFor="mobile_number">Mobile Number: </label>
         <input
-          type="text"
+          type="tel"
           id="mobile_number"
           name="mobile_number"
           value={formData.mobile_number}

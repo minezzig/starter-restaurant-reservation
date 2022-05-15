@@ -35,6 +35,47 @@ function hasValidProperties(req, res, next) {
   next();
 }
 
+// check to make sure date isn't Tuesday or date/time in the past
+function validateDateTime(req, res, next) {
+  const { data } = req.body;
+  //convert date request into just date format
+  const dateRequest = new Date(data.reservation_date);
+  const dateRequestFormat =
+    dateRequest.getFullYear() +
+    "-" +
+    dateRequest.getMonth() +
+    "-" +
+    dateRequest.getDate();
+  const timeRequest = data.reservation_time;
+
+  //format current date/time to match
+  const now = new Date();
+  const date = now.getFullYear() + "-" + now.getMonth() + "-" + now.getDate();
+  const time = now.getHours() + ":" + now.getMinutes();
+
+  // reservation must be before present date and time
+  if (
+    dateRequestFormat < date ||
+    (dateRequestFormat === date && timeRequest <= time)
+  ) {
+    if (dateRequest.getDay() === 2) {
+      return next({
+        status: 400,
+        message: "We don't accept reservations for the past, nor for Tuesdays",
+      });
+    }
+    return next({
+      status: 400,
+      message: "Please choose a time and date later than the present moment",
+    });
+  }
+  // do not allow reservations on Tuesdays
+  if (dateRequest.getDay() === 2) {
+    return next({ status: 400, message: "Sorry, we're closed on Tuesdays!" });
+  }
+  next();
+}
+
 async function list(req, res) {
   const lookUpDate = req.query.date;
   if (lookUpDate) {
@@ -50,5 +91,5 @@ async function create(req, res) {
 
 module.exports = {
   list: asyncErrorBoundary(list),
-  create: [hasValidProperties, asyncErrorBoundary(create)],
+  create: [hasValidProperties, validateDateTime, asyncErrorBoundary(create)],
 };
