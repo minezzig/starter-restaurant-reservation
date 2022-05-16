@@ -32,8 +32,8 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
         <label htmlFor="mobile_number">Mobile Number: </label>
         <input
           type="tel"
-          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
-          title="555-555-1234"
+          //pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
+          //title="555-555-1234"
           id="mobile_number"
           name="mobile_number"
           value={formData.mobile_number}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { listReservations } from "../utils/api";
+import { listTables} from "../utils/api";
 import useQuery from "../utils/useQuery";
 import { today, previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
@@ -15,6 +16,7 @@ import DisplayTables from "../layout/tables/DisplayTables";
  */
 function Dashboard({ date, setDate }) {
   const [reservations, setReservations] = useState([]);
+  const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const history = useHistory();
   const route = useRouteMatch();
@@ -37,9 +39,11 @@ function Dashboard({ date, setDate }) {
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
+    listTables(abortController.signal).then(setTables);
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
+    
     return () => abortController.abort();
   }
 
@@ -49,16 +53,29 @@ function Dashboard({ date, setDate }) {
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for date {date}</h4>
       </div>
+      <button
+        className="navigate"
+        onClick={() => history.push(`?date=${previous(date)}`)}
+      >
+        Previous
+      </button>
+      <button
+        className="navigate"
+        onClick={() => history.push(`?date=${today()}`)}
+      >
+        Today
+      </button>
+      <button
+        className="navigate"
+        onClick={() => history.push(`?date=${next(date)}`)}
+      >
+        Next
+      </button>
       <ErrorAlert error={reservationsError} />
 
       <DisplayReservations reservations={reservations} />
-      <button className="navigate" onClick={() => history.push(`?date=${previous(date)}`)}>
-        Previous
-      </button>
-      <button className="navigate" onClick={() => history.push(`?date=${today()}`)}>Today</button>
-      <button className="navigate" onClick={() => history.push(`?date=${next(date)}`)}>Next</button>
-    
-    <DisplayTables />
+
+      <DisplayTables tables={tables}/>
     </main>
   );
 }

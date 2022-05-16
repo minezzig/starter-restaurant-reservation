@@ -27,6 +27,7 @@ function TableForm({formData, handleChange, handleSubmit}) {
           value={formData.capacity}
           onChange={handleChange}
           min="1"
+          placeholder="1"
           required
         />
         <br />
