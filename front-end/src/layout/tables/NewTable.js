@@ -7,7 +7,7 @@ import ErrorAlert from "../ErrorAlert";
 
 function NewTable() {
   const history = useHistory();
-  const defaultForm = { table_name: "", capacity: "1" };
+  const defaultForm = { table_name: "", capacity: "" };
   const [formData, setFormData] = useState(defaultForm);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -22,6 +22,7 @@ function NewTable() {
     event.preventDefault();
     const abortController = new AbortController();
     try {
+      formData.capacity = parseInt(formData.capacity);
       await createTable(formData, abortController.signal);
       setFormData(defaultForm);
       history.push("/dashboard");

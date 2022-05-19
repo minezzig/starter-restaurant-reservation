@@ -4,6 +4,10 @@ async function list() {
   return knex("tables").select("*").orderBy("table_name");
 }
 
+async function read(table_id) {
+  return knex("tables").select("*").where({ table_id }).first();
+}
+
 async function create(newTable) {
   return knex("tables")
     .insert(newTable)
@@ -11,4 +15,11 @@ async function create(newTable) {
     .then((addition) => addition[0]);
 }
 
-module.exports = { list, create };
+async function seatTable(table_id, reservation_id) {
+  return knex("tables")
+    .select("*")
+    .where({ table_id })
+    .update({reservation_id}, "*");
+}
+
+module.exports = { list, read, create, seatTable };

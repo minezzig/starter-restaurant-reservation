@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-function TableForm({formData, handleChange, handleSubmit}) {
+function TableForm({ formData, handleChange, handleSubmit }) {
   const history = useHistory();
 
   return (
@@ -27,7 +27,6 @@ function TableForm({formData, handleChange, handleSubmit}) {
           value={formData.capacity}
           onChange={handleChange}
           min="1"
-          placeholder="1"
           required
         />
         <br />

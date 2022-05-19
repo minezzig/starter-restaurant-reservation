@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { listReservations } from "../utils/api";
-import { listTables} from "../utils/api";
+import { listTables } from "../utils/api";
 import useQuery from "../utils/useQuery";
 import { today, previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
@@ -43,7 +43,7 @@ function Dashboard({ date, setDate }) {
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
-    
+
     return () => abortController.abort();
   }
 
@@ -75,7 +75,7 @@ function Dashboard({ date, setDate }) {
 
       <DisplayReservations reservations={reservations} />
 
-      <DisplayTables tables={tables}/>
+      <DisplayTables tables={tables} />
     </main>
   );
 }

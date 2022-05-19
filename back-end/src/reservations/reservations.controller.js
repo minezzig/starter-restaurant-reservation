@@ -14,15 +14,8 @@ const validProperties = [
 // check that API receives all necessary fields
 function hasValidProperties(req, res, next) {
   const { data = {} } = req.body;
-  if (!req.body.data) {
+  if (!data) {
     return next({ status: 400, message: `no data` });
-  }
-
-  if (data["people"] < 1) {
-    return next({
-      status: 400,
-      message: "Party size must be 1 or more people",
-    });
   }
 
   validProperties.forEach((property) => {
@@ -30,6 +23,13 @@ function hasValidProperties(req, res, next) {
       return next({ status: 400, message: `missing ${property} value` });
     }
   });
+
+  if (data.people < 1 || !Number.isInteger(data.people)) {
+    return next({
+      status: 400,
+      message: "Party size must be and integer of 1 or more",
+    });
+  }
 
   next();
 }
@@ -55,7 +55,10 @@ function validateDateTime(req, res, next) {
   // validate if we're open
   if (timeRequest < "10:30" || timeRequest > "21:30") {
     if (timeRequest >= "22:30") {
-      return next({ status: 400, message: "Sorry, we're closed" });
+      return next({
+        status: 400,
+        message: "Sorry, we are closed.  We close at 22:30h",
+      });
     }
     return next({
       status: 400,
@@ -71,7 +74,8 @@ function validateDateTime(req, res, next) {
     if (dateRequest.getDay() === 2) {
       return next({
         status: 400,
-        message: "We don't accept reservations for the past, nor for Tuesdays",
+        // message: "We don't accept reservations for the past, nor for Tuesdays",
+        message: "We don't accept reservations on Tuesdays, as we are closed",
       });
     }
     return next({
@@ -86,13 +90,26 @@ function validateDateTime(req, res, next) {
   next();
 }
 
+async function reservationExists(req, res, next) {
+  const { reservation_id } = req.params;
+  const reservation = await reservationsService.read(reservation_id);
+  if (reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  next({ status: 404, message: "Reservation doesn't exist" });
+}
+
 // ---------------- HTTP requests ---------------- //
 async function list(req, res) {
-  const lookUpDate = req.query.date;
-  if (lookUpDate) {
-    const data = await reservationsService.list(lookUpDate);
-    res.json({ data });
-  }
+  const { date } = req.query;
+  const data = await reservationsService.list(date);
+  res.json({ data });
+}
+async function read(req, res) {
+  const { reservation_id } = res.locals.reservation;
+  const response = await reservationsService.read(reservation_id);
+  res.json({ data: response });
 }
 
 async function create(req, res) {
@@ -102,5 +119,6 @@ async function create(req, res) {
 
 module.exports = {
   list: asyncErrorBoundary(list),
+  read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
   create: [hasValidProperties, validateDateTime, asyncErrorBoundary(create)],
 };

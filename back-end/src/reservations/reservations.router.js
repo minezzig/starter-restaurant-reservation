@@ -1,4 +1,3 @@
-
 /**
  * Defines the router for reservation resources.
  *
@@ -14,5 +13,7 @@ router
   .get(controller.list)
   .post(controller.create)
   .all(methodNotAllowed);
+
+router.route("/:reservation_id").get(controller.read);
 
 module.exports = router;
