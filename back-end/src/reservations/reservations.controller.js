@@ -117,8 +117,20 @@ async function create(req, res) {
   res.status(201).json({ data: newReservation });
 }
 
+async function updateReservationStatus(req, res) {
+  const { reservation_id } = res.locals.reservation;
+  const { status } = req.body.data;
+  const updatedReservationStatus =
+    await reservationsService.updateReservationStatus(reservation_id, status);
+  res.status(201).json({ data: updatedReservationStatus });
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
   create: [hasValidProperties, validateDateTime, asyncErrorBoundary(create)],
+  update: [
+    asyncErrorBoundary(reservationExists),
+    asyncErrorBoundary(updateReservationStatus),
+  ],
 };

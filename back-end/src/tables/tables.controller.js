@@ -1,7 +1,6 @@
 const tablesService = require("./tables.service");
 const reservationsService = require("../reservations/reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
-//const { table } = require("../db/connection");
 
 const validProperties = ["table_name", "capacity"];
 
@@ -77,19 +76,19 @@ async function reservationExists(req, res, next) {
 function partyFits(req, res, next) {
   const { people } = res.locals.reservation;
   const { capacity } = res.locals.table;
-  const partyFits = people < capacity;
+  const partyFits = people <= capacity;
   if (partyFits) {
     return next();
   }
   next({ status: 400, message: `The party contains more people than chairs` });
 }
 
-function tableOccupied(req,res,next) {
-const {reservation_id} = res.locals.table;
-if (reservation_id) {
-  next({status: 400, message: `The requested table is already occupied`});
-}
-next();
+function tableOccupied(req, res, next) {
+  const { reservation_id } = res.locals.table;
+  if (reservation_id) {
+    next({ status: 400, message: `The requested table is already occupied` });
+  }
+  next();
 }
 
 async function read(req, res) {
@@ -107,8 +106,15 @@ async function seatTable(req, res) {
   const { table_id } = res.locals.table;
   const { reservation_id } = res.locals.reservation;
   const updatedTable = await tablesService.seatTable(table_id, reservation_id);
-  console.log(updatedTable);
-  res.status(201).json({ data: updatedTable });
+  const changedReservationStatus =
+    await reservationsService.updateReservationStatus(reservation_id, "seated");
+  res.status(201).json({ data: updatedTable, changedReservationStatus }); //! RETURN STATUS
+}
+
+async function finishTable(req, res) {
+  const { table_id } = res.locals.table;
+  const data = await tablesService.finishTable(table_id);
+  res.status(201).json({ data });
 }
 //-------------- validations ------------------
 
@@ -123,5 +129,9 @@ module.exports = {
     partyFits,
     tableOccupied,
     asyncErrorBoundary(seatTable),
+  ],
+  finishTable: [
+    asyncErrorBoundary(tableExists),
+    asyncErrorBoundary(finishTable),
   ],
 };

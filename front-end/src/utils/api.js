@@ -94,9 +94,8 @@ export async function createTable(newTable, signal) {
 // read a reservation request for API
 export async function readReservation(reservation_id, signal) {
   const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}`);
-  return await fetchJson(url, {headers, signal}, {})
+  return await fetchJson(url, { headers, signal }, {});
 }
-
 
 // list tables request for API
 export async function listTables(params, signal) {
@@ -104,7 +103,7 @@ export async function listTables(params, signal) {
   Object.entries(params).forEach(([key, value]) =>
     url.searchParams.append(key, value.toString())
   );
-  return await fetchJson(url, { headers, signal }, [])
+  return await fetchJson(url, { headers, signal }, []);
 }
 
 // update Tables table request for API
@@ -113,8 +112,27 @@ export async function seatTable(reservation_id, table_id, signal) {
   const options = {
     method: "PUT",
     headers,
-    body: JSON.stringify({ data: { reservation_id: reservation_id } }),
+    body: JSON.stringify({ data: { reservation_id } }),
     signal,
-  }
-  return await fetchJson(url, options, {})
+  };
+  return await fetchJson(url, options, {});
+}
+
+// clear a table after it's finished
+export async function finishTable(table_id, signal) {
+  const url = new URL(`${API_BASE_URL}/tables/${table_id}/seat`);
+  const options = { method: "DELETE", signal };
+  return await fetchJson(url, options, {});
+}
+
+// update reservation status request for API
+export async function updateReservationStatus(reservation_id, status, signal) {
+  const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}/status`);
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data: { status } }),
+    signal,
+  };
+  return await fetchJson(url, options, {});
 }

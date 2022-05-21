@@ -1,10 +1,35 @@
 import React from "react";
+import { useState } from "react";
 
 function Search() {
+  const [formData, setFormData] = useState({});
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    alert("form submitted");
+  }
+  
   return (
-    <div style={{ backgroundColor: "yellow", margin: "10px", textAlign: "center", border: "3px solid black", boxShadow: "3px 3px black"}}>
-      <h1>Search under construction</h1>
-    </div>
+    <>
+      <h1>Search for Reservation</h1>
+      <div>
+        <form onSubmit={handleSubmit}>
+          <fieldset>
+            <label htmlFor="movile_number">Mobile Number:</label>
+            <input
+              name="mobile_number"
+              id="mobile_number"
+              placeholder="Enter a customer's phone number"
+              value={formData.mobile_number}
+              onChange={handleChange}
+            />
+          </fieldset>
+          <fieldset>
+            <button type="submit">Find</button>
+          </fieldset>
+        </form>
+      </div>
+    </>
   );
 }
 export default Search;

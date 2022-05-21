@@ -19,7 +19,16 @@ async function seatTable(table_id, reservation_id) {
   return knex("tables")
     .select("*")
     .where({ table_id })
-    .update({reservation_id}, "*");
+    .update({ reservation_id }, "*")
+    .then((satTable) => satTable[0]);
 }
 
-module.exports = { list, read, create, seatTable };
+async function finishTable(table_id) {
+  return knex("tables")
+    .select("*")
+    .where({ table_id })
+    .update("reservation_id", null, "*")
+    .then((finishedTable) => finishedTable[0]);
+}
+
+module.exports = { list, read, create, seatTable, finishTable };

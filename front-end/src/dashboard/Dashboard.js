@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import { listReservations } from "../utils/api";
-import { listTables } from "../utils/api";
+import { listReservations, updateReservationStatus } from "../utils/api";
+import { listTables, finishTable } from "../utils/api";
 import useQuery from "../utils/useQuery";
 import { today, previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
@@ -17,7 +17,7 @@ import DisplayTables from "../layout/tables/DisplayTables";
 function Dashboard({ date, setDate }) {
   const [reservations, setReservations] = useState([]);
   const [tables, setTables] = useState([]);
-  const [reservationsError, setReservationsError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const history = useHistory();
   const route = useRouteMatch();
   const query = useQuery();
@@ -38,20 +38,79 @@ function Dashboard({ date, setDate }) {
 
   function loadDashboard() {
     const abortController = new AbortController();
-    setReservationsError(null);
-    listTables(abortController.signal).then(setTables);
+    //setReservationsError(null);
+    listTables(abortController.signal).then(setTables).catch(setErrorMessage);
     listReservations({ date }, abortController.signal)
       .then(setReservations)
-      .catch(setReservationsError);
+      .catch(setErrorMessage);
 
     return () => abortController.abort();
   }
+
+  const handleFinish = async (table_id, reservation_id) => {
+    if (
+      window.confirm(
+        `Is this table ready to seat new guests? This cannot be undone.`
+      )
+    ) {
+      const abortController = new AbortController();
+      try {
+        await finishTable(table_id, abortController.signal);
+        await updateReservationStatus(
+          reservation_id,
+          "finished",
+          abortController.signal
+        );
+        loadDashboard();
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          setErrorMessage(error);
+        }
+      }
+
+      return () => abortController.abort();
+    }
+  };
+
+  const days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  let day = new Date(date).getDay();
+  const dateString = [
+    date.slice(5, 7) - 1,
+    date.slice(8, 10),
+    date.slice(0, 4) - 1,
+  ];
 
   return (
     <main>
       <h1>Dashboard</h1>
       <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for date {date}</h4>
+        <h4 className="mb-0">
+          Reservations for: {days[day]}, {months[dateString[0]]} {dateString[1]}
+          , {dateString[2]}
+        </h4>
       </div>
       <button
         className="navigate"
@@ -71,11 +130,11 @@ function Dashboard({ date, setDate }) {
       >
         Next
       </button>
-      <ErrorAlert error={reservationsError} />
+      <ErrorAlert error={errorMessage} />
 
       <DisplayReservations reservations={reservations} />
 
-      <DisplayTables tables={tables} />
+      <DisplayTables tables={tables} handleFinish={handleFinish} />
     </main>
   );
 }

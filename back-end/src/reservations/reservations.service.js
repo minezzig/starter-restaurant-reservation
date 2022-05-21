@@ -22,4 +22,12 @@ async function create(newReservation) {
     .then((addition) => addition[0]);
 }
 
-module.exports = { list, read, create };
+async function updateReservationStatus(reservation_id, status) {
+  return knex("reservations")
+    .select("*")
+    .where({ reservation_id })
+    .update("status", status, "*")
+    .then((updatedReservationStatus) => updatedReservationStatus[0]);
+}
+
+module.exports = { list, read, create, updateReservationStatus };

@@ -18,12 +18,15 @@ const occupied = {
   backgroundColor: "coral",
 };
 
-function DisplayTables({ tables }) {
+function DisplayTables({ tables, handleFinish }) {
   return (
-    <div>
+    <>
       <h1>table display</h1>
       {tables.map((table) => (
-        <div style={table.reservation_id ? occupied : open} key={table.table_id}>
+        <div
+          style={table.reservation_id ? occupied : open}
+          key={table.table_id}
+        >
           Table Name: {table.table_name}
           <br />
           Capacity: {table.capacity}
@@ -33,9 +36,18 @@ function DisplayTables({ tables }) {
               {table.reservation_id === null ? "Free" : "Occupied"}
             </strong>
           </span>
+          <br />
+          {table.reservation_id && (
+            <button
+              data-table-id-finish={table.table_id}
+              onClick={() => handleFinish(table.table_id, table.reservation_id)}
+            >
+              Finish
+            </button>
+          )}
         </div>
       ))}
-    </div>
+    </>
   );
 }
 

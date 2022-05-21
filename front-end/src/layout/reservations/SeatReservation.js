@@ -62,7 +62,6 @@ function SeatReservation() {
   // collect information from form selection
   const handleChange = (event) => {
     setFormData({ [event.target.name]: event.target.value });
-    console.log(formData);
   };
 
   // submit the form
@@ -71,7 +70,8 @@ function SeatReservation() {
     const table_id = Number(formData.table_id);
     const abortController = new AbortController();
     try {
-      await seatTable(reservation_id, table_id, abortController.signal); //!add the form data
+      //await updateReservationStatus(reservation_id, "seated", abortController.signal);
+      await seatTable(reservation_id, table_id, abortController.signal);
       history.push("/dashboard");
     } catch (error) {
       setErrorMessage(error);
@@ -80,26 +80,36 @@ function SeatReservation() {
   };
 
   return (
-    <div>
+    <>
       <ErrorAlert error={errorMessage} />
       <h1>Choose a Table</h1>
       <p>
         Choose a table for {reservation.last_name}, party of{" "}
         {reservation.people}:
       </p>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="table_id">Table Number:</label>
-        <select id="table_id" name="table_id" onChange={handleChange} required>
-          <option value="">Choose a Table</option>
-          {tableList}
-        </select>
-        <br />
-        <button type="submit">Submit</button>
-        <button type="reset" onClick={() => history.goBack()}>
-          Cancel
-        </button>
-      </form>
-    </div>
+      <div>
+        <form onSubmit={handleSubmit}>
+          <fieldset>
+            <label htmlFor="table_id">Table Number:</label>
+            <select
+              id="table_id"
+              name="table_id"
+              onChange={handleChange}
+              required
+            >
+              <option value="">Choose a Table</option>
+              {tableList}
+            </select>
+          </fieldset>
+          <fieldset>
+            <button type="submit">Submit</button>
+            <button type="reset" onClick={() => history.goBack()}>
+              Cancel
+            </button>
+          </fieldset>
+        </form>
+      </div>
+    </>
   );
 }
 
