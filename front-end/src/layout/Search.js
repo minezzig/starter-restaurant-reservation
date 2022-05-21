@@ -1,14 +1,29 @@
 import React from "react";
 import { useState } from "react";
+import { searchMobileNumber } from "../utils/api";
+import DisplayReservations from "./reservations/DisplayReservations";
 
 function Search() {
-  const [formData, setFormData] = useState({});
+  const initialFormData = { mobile_number: "" };
+  const [formData, setFormData] = useState(initialFormData);
+  const [results, setResults] = useState([]);
+  const noResults = "No reservations found";
 
-  const handleSubmit = (event) => {
+  const handleChange = (event) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    alert("form submitted");
-  }
-  
+    const { mobile_number } = formData;
+    const abortController = new AbortController();
+    const found = await searchMobileNumber(
+      mobile_number,
+      abortController.signal
+    );
+    found.length ? setResults(found) : setResults(noResults);
+  };
+
   return (
     <>
       <h1>Search for Reservation</h1>
@@ -22,6 +37,7 @@ function Search() {
               placeholder="Enter a customer's phone number"
               value={formData.mobile_number}
               onChange={handleChange}
+              required
             />
           </fieldset>
           <fieldset>
@@ -29,6 +45,11 @@ function Search() {
           </fieldset>
         </form>
       </div>
+      {typeof results !== "string" ? (
+        <DisplayReservations reservations={results} search={true} />
+      ) : (
+        results
+      )}
     </>
   );
 }

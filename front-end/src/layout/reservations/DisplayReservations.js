@@ -9,11 +9,12 @@ const style = {
   height: "150px",
 };
 
-function DisplayReservations({ reservations }) {
+function DisplayReservations({ reservations, search }) {
+
   return (
     <div>
       {reservations.map((reservation) => {
-        if (reservation.status !== "finished") {
+        if (reservation.status !== "finished" || search) {
           return (
             <div key={reservation.reservation_id} style={style}>
               <b>

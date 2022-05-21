@@ -103,9 +103,12 @@ async function reservationExists(req, res, next) {
 // ---------------- HTTP requests ---------------- //
 async function list(req, res) {
   const { date } = req.query;
-  const data = await reservationsService.list(date);
+  const { mobile_number } = req.query;
+  const data = await reservationsService.list(date, mobile_number);
+
   res.json({ data });
 }
+
 async function read(req, res) {
   const { reservation_id } = res.locals.reservation;
   const response = await reservationsService.read(reservation_id);

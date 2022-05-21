@@ -1,11 +1,21 @@
 const knex = require("../db/connection");
 
-async function list(reservation_date) {
+async function list(reservation_date, mobile_number) {
   if (reservation_date) {
     return knex("reservations")
       .select("*")
       .where({ reservation_date })
       .orderBy("reservation_time");
+  } else if (mobile_number) {
+    return knex("reservations")
+      .whereRaw(
+        "translate(mobile_number, '() -', '') like ?",
+        `%${mobile_number.replace(/\D/g, "")}%`
+      )
+      .orderBy("reservation_date");
+    //   .select("*")
+    // .where("mobile_number", "like", `%${mobile_number}%`)
+    //.orderBy("reservation_date");
   } else {
     return knex("reservations").select("*").orderBy("reservation_date");
   }
