@@ -47,6 +47,30 @@ function Dashboard({ date, setDate }) {
     return () => abortController.abort();
   }
 
+  const handleCancel = async (reservation_id) => {
+    if (
+      window.confirm(
+        "Do you want to cancel this reservation? This cannot be undone."
+      )
+    ) {
+      const abortController = new AbortController();
+      try {
+        await updateReservationStatus(
+          reservation_id,
+          "cancelled",
+          abortController.signal
+        );
+        loadDashboard();
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          setErrorMessage(error);
+        }
+      }
+
+      return () => abortController.abort();
+    }
+  };
+
   const handleFinish = async (table_id, reservation_id) => {
     if (
       window.confirm(
@@ -82,6 +106,7 @@ function Dashboard({ date, setDate }) {
     "Sunday",
   ];
   const months = [
+    null,
     "January",
     "February",
     "March",
@@ -97,10 +122,11 @@ function Dashboard({ date, setDate }) {
   ];
 
   let day = new Date(date).getDay();
+
   const dateString = [
-    date.slice(5, 7) - 1,
-    date.slice(8, 10),
-    date.slice(0, 4) - 1,
+    parseInt(date.slice(5, 7)),
+    parseInt(date.slice(8, 10)),
+    parseInt(date.slice(0, 4)),
   ];
 
   return (
@@ -132,7 +158,10 @@ function Dashboard({ date, setDate }) {
       </button>
       <ErrorAlert error={errorMessage} />
 
-      <DisplayReservations reservations={reservations} />
+      <DisplayReservations
+        reservations={reservations}
+        handleCancel={handleCancel}
+      />
 
       <DisplayTables tables={tables} handleFinish={handleFinish} />
     </main>

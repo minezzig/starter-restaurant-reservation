@@ -1,4 +1,8 @@
 import React from "react";
+//import { useState } from "react";
+//import { updateReservationStatus } from "../../utils/api";
+//import loadDashboard from "../../dashboard/Dashboard";
+//import ErrorAlert from "../ErrorAlert";
 
 const style = {
   border: "1px solid black",
@@ -9,12 +13,17 @@ const style = {
   height: "150px",
 };
 
-function DisplayReservations({ reservations, search }) {
+function DisplayReservations({ reservations, search = false, handleCancel }) {
+  // !search = fasle by default?
 
   return (
     <div>
       {reservations.map((reservation) => {
-        if (reservation.status !== "finished" || search) {
+        if (
+          reservation.status === "booked" ||
+          reservation.status === "seated" ||
+          search
+        ) {
           return (
             <div key={reservation.reservation_id} style={style}>
               <b>
@@ -31,11 +40,20 @@ function DisplayReservations({ reservations, search }) {
               </span>
               <br />
               {reservation.status === "booked" ? (
-                <a href={`/reservations/${reservation.reservation_id}/seat`}>
-                  <button className="navigate" type="button">
-                    Seat
+                <div>
+                  <a href={`/reservations/${reservation.reservation_id}/seat`}>
+                    <button type="button">Seat</button>
+                  </a>
+                  <a href={`/reservations/${reservation.reservation_id}/edit`}>
+                    <button type="button">Edit</button>
+                  </a>
+                  <button
+                    data-reservation-id-cancel={reservation.reservation_id}
+                    onClick={() => handleCancel(reservation.reservation_id)}
+                  >
+                    Cancel
                   </button>
-                </a>
+                </div>
               ) : null}
             </div>
           );

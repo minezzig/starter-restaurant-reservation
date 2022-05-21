@@ -8,8 +8,9 @@ import { useState } from "react";
 
 import NewReservation from "./reservations/NewReservation";
 import NewTable from "./tables/NewTable.js";
-import Search from "./Search";
+import Search from "./reservations/Search";
 import SeatReservation from "./reservations/SeatReservation";
+import EditReservation from "./reservations/EditReservation";
 
 /**
  * Defines all the routes for the application.
@@ -38,6 +39,9 @@ function Routes() {
       </Route>
       <Route path="/reservations/:reservation_id/seat">
         <SeatReservation />
+      </Route>
+      <Route path="/reservations/:reservation_id/edit">
+        <EditReservation />
       </Route>
       <Route path="/tables/new">
         <NewTable />

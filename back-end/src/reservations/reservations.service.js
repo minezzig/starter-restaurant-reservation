@@ -12,7 +12,8 @@ async function list(reservation_date, mobile_number) {
         "translate(mobile_number, '() -', '') like ?",
         `%${mobile_number.replace(/\D/g, "")}%`
       )
-      .orderBy("reservation_date");
+      .orderBy("reservation_date")
+      .orderBy("reservation_time");
     //   .select("*")
     // .where("mobile_number", "like", `%${mobile_number}%`)
     //.orderBy("reservation_date");
