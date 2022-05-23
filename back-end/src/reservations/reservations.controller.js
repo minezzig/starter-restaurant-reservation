@@ -37,19 +37,25 @@ function hasValidProperties(req, res, next) {
 // check to make sure date isn't Tuesday or date/time in the past
 function validateDateTime(req, res, next) {
   const { data } = req.body;
+
   //convert date request into just date format
   const dateRequest = new Date(data.reservation_date);
+  //console.log("Reservation_date", data.reservation_date);
+  //console.log("dateRequest", dateRequest)
   const dateRequestFormat =
     dateRequest.getFullYear() +
     "-" +
-    dateRequest.getMonth() +
+    dateRequest.getMonth()  +
     "-" +
     dateRequest.getDate();
+  //console.log("dateREquestFormat", dateRequestFormat)
   const timeRequest = data.reservation_time;
 
   //format current date/time to match
   const now = new Date();
-  const date = now.getFullYear() + "-" + now.getMonth() + "-" + now.getDate();
+  const date =
+    now.getFullYear() + "-" + now.getMonth()  + "-" + now.getDate();
+  //console.log("date now", date)
   const time = now.getHours() + ":" + now.getMinutes();
 
   // validate if we're open
@@ -128,6 +134,17 @@ async function updateReservationStatus(req, res) {
   res.status(201).json({ data: updatedReservationStatus });
 }
 
+async function updateReservationInformation(req, res) {
+  const { reservation_id } = res.locals.reservation;
+  const reservation = req.body.data;
+  const udpatedReservationInformation =
+    await reservationsService.updateReservationInformation(
+      reservation_id,
+      reservation
+    );
+  res.status(201).json({ data: udpatedReservationInformation });
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
@@ -135,5 +152,9 @@ module.exports = {
   update: [
     asyncErrorBoundary(reservationExists),
     asyncErrorBoundary(updateReservationStatus),
+  ],
+  updateReservationInformation: [
+    asyncErrorBoundary(reservationExists),
+    asyncErrorBoundary(updateReservationInformation),
   ],
 };

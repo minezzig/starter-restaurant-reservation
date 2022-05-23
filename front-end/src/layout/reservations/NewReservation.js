@@ -30,6 +30,7 @@ function NewReservation() {
     event.preventDefault();
     const abortController = new AbortController();
     const newResDate = formData.reservation_date;
+    formData.reservation_date = new Date(newResDate);
     formData.people = parseInt(formData.people);
     try {
       await createReservation(formData, abortController.signal);

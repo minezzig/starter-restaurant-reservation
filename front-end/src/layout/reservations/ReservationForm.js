@@ -2,9 +2,9 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import "./ReservationForm.css";
 
-function ReservationForm({ formData, handleChange, handleSubmit }) {
+function ReservationForm({ formData, handleChange, handleSubmit, purpose }) {
   const history = useHistory();
-
+//console.log(formData)
   return (
     <>
       <h5>Please fill out the form with your party's information:</h5>
@@ -51,6 +51,7 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
               type="date"
               id="reservation_date"
               name="reservation_date"
+              pattern="\d{4}-\d{2}-\d{2}"
               value={formData.reservation_date}
               onChange={handleChange}
               required
@@ -82,7 +83,7 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
           </fieldset>
           <fieldset>
             <button className="navigate" type="submit">
-              Reserve
+              {purpose ? "submit" : "Reserve"}
             </button>
             <button
               className="navigate"

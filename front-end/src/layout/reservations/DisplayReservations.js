@@ -10,7 +10,7 @@ const style = {
   margin: "10px",
   padding: "5px",
   width: "300px",
-  height: "150px",
+  height: "165px",
 };
 
 function DisplayReservations({ reservations, search = false, handleCancel }) {
@@ -34,10 +34,13 @@ function DisplayReservations({ reservations, search = false, handleCancel }) {
               {reservation.first_name} {reservation.last_name}
               <br />
               {reservation.mobile_number}
-              <br />
+              <br />       
+              {reservation.reservation_date}
+              <br/>
               <span data-reservation-id-status={reservation.reservation_id}>
                 {reservation.status}
               </span>
+       
               <br />
               {reservation.status === "booked" ? (
                 <div>

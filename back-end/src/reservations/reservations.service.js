@@ -41,4 +41,12 @@ async function updateReservationStatus(reservation_id, status) {
     .then((updatedReservationStatus) => updatedReservationStatus[0]);
 }
 
-module.exports = { list, read, create, updateReservationStatus };
+async function updateReservationInformation(reservation_id, reservation){
+  return knex("reservations")
+  .select("*")
+  .where({reservation_id})
+  .update(reservation, "*")
+  .then((updateReservationInformation) => updateReservationInformation[0]);
+}
+
+module.exports = { list, read, create, updateReservationStatus, updateReservationInformation };
