@@ -14,7 +14,7 @@ const validProperties = [
 // check that API receives all necessary fields
 function hasValidProperties(req, res, next) {
   const { data = {} } = req.body;
-  if (!data) {
+  if (!req.body.data) {
     return next({ status: 400, message: `no data` });
   }
 
@@ -34,6 +34,14 @@ function hasValidProperties(req, res, next) {
   next();
 }
 
+// has valid status update property
+function validStatusUpdateProperty(req, res, next) {
+  if (!req.body.data) {
+    return next({ status: 400, message: `no data` });
+  }
+  const {status} = req.body.data
+}
+
 // check to make sure date isn't Tuesday or date/time in the past
 function validateDateTime(req, res, next) {
   const { data } = req.body;
@@ -45,7 +53,7 @@ function validateDateTime(req, res, next) {
   const dateRequestFormat =
     dateRequest.getFullYear() +
     "-" +
-    dateRequest.getMonth()  +
+    dateRequest.getMonth() +
     "-" +
     dateRequest.getDate();
   //console.log("dateREquestFormat", dateRequestFormat)
@@ -53,8 +61,7 @@ function validateDateTime(req, res, next) {
 
   //format current date/time to match
   const now = new Date();
-  const date =
-    now.getFullYear() + "-" + now.getMonth()  + "-" + now.getDate();
+  const date = now.getFullYear() + "-" + now.getMonth() + "-" + now.getDate();
   //console.log("date now", date)
   const time = now.getHours() + ":" + now.getMinutes();
 
@@ -80,7 +87,6 @@ function validateDateTime(req, res, next) {
     if (dateRequest.getDay() === 2) {
       return next({
         status: 400,
-        // message: "We don't accept reservations for the past, nor for Tuesdays",
         message: "We don't accept reservations on Tuesdays, as we are closed",
       });
     }
@@ -111,14 +117,12 @@ async function list(req, res) {
   const { date } = req.query;
   const { mobile_number } = req.query;
   const data = await reservationsService.list(date, mobile_number);
-
-  res.json({ data });
+  res.status(200).json({ data });
 }
 
-async function read(req, res) {
-  const { reservation_id } = res.locals.reservation;
-  const response = await reservationsService.read(reservation_id);
-  res.json({ data: response });
+function read(req, res) {
+  const reservation = res.locals.reservation;
+  res.status(200).json({ data: reservation });
 }
 
 async function create(req, res) {
@@ -131,7 +135,7 @@ async function updateReservationStatus(req, res) {
   const { status } = req.body.data;
   const updatedReservationStatus =
     await reservationsService.updateReservationStatus(reservation_id, status);
-  res.status(201).json({ data: updatedReservationStatus });
+  res.status(200).json({ data: updatedReservationStatus });
 }
 
 async function updateReservationInformation(req, res) {
@@ -142,7 +146,7 @@ async function updateReservationInformation(req, res) {
       reservation_id,
       reservation
     );
-  res.status(201).json({ data: udpatedReservationInformation });
+  res.status(200).json({ data: udpatedReservationInformation });
 }
 
 module.exports = {
@@ -155,6 +159,19 @@ module.exports = {
   ],
   updateReservationInformation: [
     asyncErrorBoundary(reservationExists),
+    hasValidProperties,
+    validateDateTime,
     asyncErrorBoundary(updateReservationInformation),
   ],
 };
+
+// createa;   has only necessary properties
+
+//update (status):    has required properties for updateStatus {status:}
+//                    a status can oonly be booked, seated, finished, cancelled
+//                  verify that reservation is booked (not seated cancled or finished)
+
+//updateReservationInfo:  ADDED
+//includes all necessary information - same as create {hasValidProperies, validateTIme}
+
+//

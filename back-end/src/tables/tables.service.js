@@ -12,7 +12,7 @@ async function create(newTable) {
   return knex("tables")
     .insert(newTable)
     .returning("*")
-    .then((addition) => addition[0]);
+    .then((created) => created[0]);
 }
 
 async function seatTable(table_id, reservation_id) {

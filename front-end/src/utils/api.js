@@ -58,6 +58,8 @@ async function fetchJson(url, options, onCancel) {
  *  a promise that resolves to a possibly empty array of reservation saved in the database.
  */
 
+//-------------APIs--------------
+
 export async function listReservations(params, signal) {
   const url = new URL(`${API_BASE_URL}/reservations`);
   Object.entries(params).forEach(([key, value]) =>
@@ -77,7 +79,7 @@ export async function createReservation(newReservation, signal) {
     body: JSON.stringify({ data: newReservation }),
     signal,
   };
-  return await fetchJson(url, options, newReservation);
+  return await fetchJson(url, options);
 }
 // creates a table for API
 export async function createTable(newTable, signal) {
@@ -88,13 +90,13 @@ export async function createTable(newTable, signal) {
     body: JSON.stringify({ data: newTable }),
     signal,
   };
-  return await fetchJson(url, options, newTable);
+  return await fetchJson(url, options);
 }
 
 // read a reservation request for API
 export async function readReservation(reservation_id, signal) {
   const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}`);
-  return await fetchJson(url, { headers, signal }, {});
+  return await fetchJson(url, { headers, signal });
 }
 
 // list tables request for API
@@ -103,7 +105,7 @@ export async function listTables(params, signal) {
   Object.entries(params).forEach(([key, value]) =>
     url.searchParams.append(key, value.toString())
   );
-  return await fetchJson(url, { headers, signal }, []);
+  return await fetchJson(url, { headers, signal });
 }
 
 // update Tables table request for API
@@ -115,14 +117,14 @@ export async function seatTable(reservation_id, table_id, signal) {
     body: JSON.stringify({ data: { reservation_id } }),
     signal,
   };
-  return await fetchJson(url, options, {});
+  return await fetchJson(url, options);
 }
 
 // clear a table after it's finished
 export async function finishTable(table_id, signal) {
   const url = new URL(`${API_BASE_URL}/tables/${table_id}/seat`);
   const options = { method: "DELETE", signal };
-  return await fetchJson(url, options, {});
+  return await fetchJson(url, options);
 }
 
 // update reservation status request for API
@@ -134,22 +136,28 @@ export async function updateReservationStatus(reservation_id, status, signal) {
     body: JSON.stringify({ data: { status } }),
     signal,
   };
-  return await fetchJson(url, options, {});
+  return await fetchJson(url, options);
 }
 
 // get phone number reqeust for API
 export async function searchMobileNumber(mobile_number, signal) {
-  const url = new URL(`${API_BASE_URL}/reservations?mobile_number=${mobile_number}`);
-  return await fetchJson(url, {headers, signal}, {})
+  const url = new URL(
+    `${API_BASE_URL}/reservations?mobile_number=${mobile_number}`
+  );
+  return await fetchJson(url, { headers, signal });
 }
 // update reservation information for API
-export async function updateReservationInformation(reservation_id, updatedReservation, signal) {
+export async function updateReservationInformation(
+  reservation_id,
+  updatedReservation,
+  signal
+) {
   const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}`);
   const options = {
     method: "PUT",
     headers,
-    body: JSON.stringify({ data: updatedReservation   }),
+    body: JSON.stringify({ data: updatedReservation }),
     signal,
   };
-  return await fetchJson(url, options, {});
+  return await fetchJson(url, options);
 }

@@ -78,15 +78,19 @@ function Search() {
           </fieldset>
         </form>
       </div>
+
       {typeof results !== "string" ? (
-        <DisplayReservations
-          reservations={results}
-          search={true}
-          handleCancel={handleCancel}
-        />
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
+          <DisplayReservations
+            reservations={results}
+            search={true}
+            handleCancel={handleCancel}
+          />{" "}
+        </div>
       ) : (
         results
       )}
+
       <ErrorAlert error={errorMessage} />
     </>
   );

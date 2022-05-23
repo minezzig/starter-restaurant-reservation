@@ -6,7 +6,9 @@ async function list(reservation_date, mobile_number) {
       .select("*")
       .where({ reservation_date })
       .orderBy("reservation_time");
-  } else if (mobile_number) {
+  }
+
+  if (mobile_number) {
     return knex("reservations")
       .whereRaw(
         "translate(mobile_number, '() -', '') like ?",
@@ -14,12 +16,9 @@ async function list(reservation_date, mobile_number) {
       )
       .orderBy("reservation_date")
       .orderBy("reservation_time");
-    //   .select("*")
-    // .where("mobile_number", "like", `%${mobile_number}%`)
-    //.orderBy("reservation_date");
-  } else {
-    return knex("reservations").select("*").orderBy("reservation_date");
   }
+
+  return knex("reservations").select("*").orderBy("reservation_date");
 }
 
 async function read(reservation_id) {
@@ -41,12 +40,18 @@ async function updateReservationStatus(reservation_id, status) {
     .then((updatedReservationStatus) => updatedReservationStatus[0]);
 }
 
-async function updateReservationInformation(reservation_id, reservation){
+async function updateReservationInformation(reservation_id, reservation) {
   return knex("reservations")
-  .select("*")
-  .where({reservation_id})
-  .update(reservation, "*")
-  .then((updateReservationInformation) => updateReservationInformation[0]);
+    .select("*")
+    .where({ reservation_id })
+    .update(reservation, "*")
+    .then((updateReservationInformation) => updateReservationInformation[0]);
 }
 
-module.exports = { list, read, create, updateReservationStatus, updateReservationInformation };
+module.exports = {
+  list,
+  read,
+  create,
+  updateReservationStatus,
+  updateReservationInformation,
+};

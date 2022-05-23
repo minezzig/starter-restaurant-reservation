@@ -3,9 +3,12 @@
   border: 2px solid black;
   border-radius: 5px;
   box-shadow: 3px 3px black;
-  padding: 2px;
+  padding: 25x;
   margin: 5px;
 }
 .navigate:focus {
-outline: 0;
+  outline: 0;
+}
+body {
+  background-color: rgb(243, 243, 250);
 }

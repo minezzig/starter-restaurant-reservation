@@ -4,11 +4,7 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 const validProperties = ["table_name", "capacity"];
 
-async function list(req, res) {
-  const data = await tablesService.list();
-  res.json({ data });
-}
-
+// ------------------VALIDATIONS-----------------------
 function hasRequriedProperties(req, res, next) {
   const { data = {} } = req.body;
   if (!req.body.data) {
@@ -40,7 +36,7 @@ function hasRequriedProperties(req, res, next) {
 
 function validSeatingRequest(req, res, next) {
   const { data = {} } = req.body;
-  if (!data) {
+  if (!req.body.data) {
     next({ status: 400, message: `Request data not included` });
   }
   if (!data.reservation_id) {
@@ -64,7 +60,6 @@ async function reservationExists(req, res, next) {
   const reservation = await reservationsService.read(reservation_id);
   if (reservation) {
     res.locals.reservation = reservation;
-
     return next();
   }
   next({
@@ -76,11 +71,10 @@ async function reservationExists(req, res, next) {
 function partyFits(req, res, next) {
   const { people } = res.locals.reservation;
   const { capacity } = res.locals.table;
-  const partyFits = people <= capacity;
-  if (partyFits) {
-    return next();
+  if (people > capacity) {
+    next({ status: 400, message: `The party contains more people than chairs` });
   }
-  next({ status: 400, message: `The party contains more people than chairs` });
+  return next();
 }
 
 function tableOccupied(req, res, next) {
@@ -91,10 +85,15 @@ function tableOccupied(req, res, next) {
   next();
 }
 
-async function read(req, res) {
-  const { table_id } = res.locals.table;
-  const response = await tablesService.read(table_id);
-  res.status(201).json({ data: response });
+// --------------------regular calls------------------
+async function list(req, res) {
+  const data = await tablesService.list();
+  res.status(200).json({ data });
+}
+
+function read(req, res) {
+  const { table } = res.locals;
+  res.status(200).json({ data: table });
 }
 
 async function create(req, res) {
@@ -108,19 +107,19 @@ async function seatTable(req, res) {
   const updatedTable = await tablesService.seatTable(table_id, reservation_id);
   const changedReservationStatus =
     await reservationsService.updateReservationStatus(reservation_id, "seated");
-  res.status(201).json({ data: updatedTable, changedReservationStatus }); //! RETURN STATUS
+  res.status(200).json({ data: updatedTable, changedReservationStatus }); 
 }
 
 async function finishTable(req, res) {
   const { table_id } = res.locals.table;
   const data = await tablesService.finishTable(table_id);
-  res.status(201).json({ data });
+  res.status(200).json({ data });
 }
-//-------------- validations ------------------
+
 
 module.exports = {
   list: asyncErrorBoundary(list),
-  read: [tableExists, asyncErrorBoundary(read)],
+  read: [asyncErrorBoundary(tableExists), asyncErrorBoundary(read)],
   create: [hasRequriedProperties, asyncErrorBoundary(create)],
   seatTable: [
     validSeatingRequest,
