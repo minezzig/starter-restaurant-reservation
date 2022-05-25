@@ -29,13 +29,13 @@ function NewReservation() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const abortController = new AbortController();
-    const newResDate = formData.reservation_date;
-    formData.reservation_date = new Date(newResDate);
+    //const newResDate = formData.reservation_date; //!?!?!?!?! is this messing up my date?
+    //formData.reservation_date = new Date(newResDate);
     formData.people = parseInt(formData.people);
     try {
       await createReservation(formData, abortController.signal);
       setFormData(defaultForm);
-      history.push(`/dashboard?date=${newResDate}`);
+      history.push(`/dashboard?date=${formData.reservation_date}`);
     } catch (error) {
       setErrorMessage(error);
     }

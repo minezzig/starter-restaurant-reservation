@@ -80,11 +80,11 @@ function Dashboard({ date, setDate }) {
       const abortController = new AbortController();
       try {
         await finishTable(table_id, abortController.signal);
-        await updateReservationStatus(
-          reservation_id,
-          "finished",
-          abortController.signal
-        );
+        // await updateReservationStatus(
+        //   reservation_id,
+        //   "finished",
+        //   abortController.signal
+        // );
         loadDashboard();
       } catch (error) {
         if (error.name !== "AbortError") {

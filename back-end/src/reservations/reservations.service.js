@@ -5,6 +5,7 @@ async function list(reservation_date, mobile_number) {
     return knex("reservations")
       .select("*")
       .where({ reservation_date })
+      .whereNot({status: "finished"})
       .orderBy("reservation_time");
   }
 

@@ -3,6 +3,7 @@ import React from "react";
 //import { updateReservationStatus } from "../../utils/api";
 //import loadDashboard from "../../dashboard/Dashboard";
 //import ErrorAlert from "../ErrorAlert";
+import {formatAsDate, formatAsTime} from "../../utils/date-time"
 
 const style = {
   border: "1px solid black",
@@ -15,7 +16,6 @@ const style = {
 };
 
 function DisplayReservations({ reservations, search = false, handleCancel }) {
-  // !search = fasle by default?
 
   function formatMobile(number) {
     number = number.replaceAll("-", "");
@@ -35,8 +35,8 @@ function DisplayReservations({ reservations, search = false, handleCancel }) {
           ) {
             return (
               <div key={reservation.reservation_id} style={style}>
-                <b>{reservation.reservation_time.split("").slice(0, 5)}</b>
-                <span> -{reservation.reservation_date}</span>
+                <b>{formatAsTime(reservation.reservation_time)}</b>
+                <span>- {formatAsDate(reservation.reservation_date)}</span>
                 <br />
                 {reservation.first_name} {reservation.last_name}
                 <br />
@@ -45,9 +45,9 @@ function DisplayReservations({ reservations, search = false, handleCancel }) {
                 <span>Party of {reservation.people}</span>
                 <br />
                 <b>
-                  <span data-reservation-id-status={reservation.reservation_id}>
-                    {reservation.status.toUpperCase()}
-                  </span>
+                  <p data-reservation-id-status={reservation.reservation_id}>
+                    {reservation.status}
+                  </p>
                 </b>
                 <br />
                 {reservation.status === "booked" ? (

@@ -4,7 +4,6 @@ import "./ReservationForm.css";
 
 function ReservationForm({ formData, handleChange, handleSubmit, purpose }) {
   const history = useHistory();
-//console.log(formData)
   return (
     <>
       <h5>Please fill out the form with your party's information:</h5>
@@ -51,7 +50,7 @@ function ReservationForm({ formData, handleChange, handleSubmit, purpose }) {
               type="date"
               id="reservation_date"
               name="reservation_date"
-              pattern="\d{4}-\d{2}-\d{2}"
+              //pattern="\d{4}-\d{2}-\d{2}"
               value={formData.reservation_date}
               onChange={handleChange}
               required

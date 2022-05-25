@@ -70,7 +70,7 @@ function SeatReservation() {
     const table_id = Number(formData.table_id);
     const abortController = new AbortController();
     try {
-      //await updateReservationStatus(reservation_id, "seated", abortController.signal);
+      //await updateReservationStatus(reservation_id, "seated", abortController.signal);      delete me, i run from the controller
       await seatTable(reservation_id, table_id, abortController.signal);
       history.push("/dashboard");
     } catch (error) {

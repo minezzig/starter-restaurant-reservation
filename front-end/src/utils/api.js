@@ -6,7 +6,7 @@ import formatReservationDate from "./format-reservation-date";
 import formatReservationTime from "./format-reservation-date";
 
 const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL || "http://localhost:5001";
+  process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
 
 /**
  * Defines the default headers for these functions to work with `json-server`
@@ -57,6 +57,7 @@ async function fetchJson(url, options, onCancel) {
  * @returns {Promise<[reservation]>}
  *  a promise that resolves to a possibly empty array of reservation saved in the database.
  */
+
 
 //-------------APIs--------------
 
@@ -141,17 +142,11 @@ export async function updateReservationStatus(reservation_id, status, signal) {
 
 // get phone number reqeust for API
 export async function searchMobileNumber(mobile_number, signal) {
-  const url = new URL(
-    `${API_BASE_URL}/reservations?mobile_number=${mobile_number}`
-  );
-  return await fetchJson(url, { headers, signal });
+  const url = new URL(`${API_BASE_URL}/reservations?mobile_number=${mobile_number}`);
+  return await fetchJson(url, {headers, signal})
 }
 // update reservation information for API
-export async function updateReservationInformation(
-  reservation_id,
-  updatedReservation,
-  signal
-) {
+export async function updateReservationInformation(reservation_id, updatedReservation, signal) {
   const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}`);
   const options = {
     method: "PUT",
