@@ -7,3 +7,8 @@
 Website: https://reserve-table-frontend.herokuapp.com/reservations
 
 <img width="785" alt="Screen Shot 2022-06-14 at 18 53 15" src="https://user-images.githubusercontent.com/75479975/173633240-c163e0e1-474c-4492-b478-bd5976da4e09.png">
+
+# Instructions:
+1. Fork & Clone
+2. Run npm install to install dependancies
+3. Run npm run start:dev to run program in dev mode. 
