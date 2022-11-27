@@ -7,6 +7,7 @@ import { today, previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import DisplayReservations from "../layout/reservations/DisplayReservations";
 import DisplayTables from "../layout/tables/DisplayTables";
+import "./Dashboard.css";
 
 /**
  * Defines the dashboard page.
@@ -80,11 +81,6 @@ function Dashboard({ date, setDate }) {
       const abortController = new AbortController();
       try {
         await finishTable(table_id, abortController.signal);
-        // await updateReservationStatus(
-        //   reservation_id,
-        //   "finished",
-        //   abortController.signal
-        // );
         loadDashboard();
       } catch (error) {
         if (error.name !== "AbortError") {
@@ -138,24 +134,16 @@ function Dashboard({ date, setDate }) {
           , {dateString[2]}
         </h4>
       </div>
-      <button
-        className="navigate"
-        onClick={() => history.push(`?date=${previous(date)}`)}
-      >
-        Previous
-      </button>
-      <button
-        className="navigate"
-        onClick={() => history.push(`?date=${today()}`)}
-      >
-        Today
-      </button>
-      <button
-        className="navigate"
-        onClick={() => history.push(`?date=${next(date)}`)}
-      >
-        Next
-      </button>
+
+      <div className="navigation">
+        <button onClick={() => history.push(`?date=${previous(date)}`)}>
+          Previous
+        </button>
+        <button onClick={() => history.push(`?date=${today()}`)}>Today</button>
+        <button onClick={() => history.push(`?date=${next(date)}`)}>
+          Next
+        </button>
+      </div>
       <ErrorAlert error={errorMessage} />
 
       <DisplayReservations

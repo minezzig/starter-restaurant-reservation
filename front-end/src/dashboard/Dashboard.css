@@ -1,0 +1,13 @@
+.navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.navigation button{
+    background-color: cornflowerblue;
+    border: 2px solid black;
+    box-shadow: 1px 1px rgba(0, 0, 0);
+    width: 80px;
+    margin: 5px;
+    color: white;
+}

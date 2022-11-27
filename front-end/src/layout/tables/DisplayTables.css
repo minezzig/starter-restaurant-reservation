@@ -1,0 +1,50 @@
+.tableContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tableContainer button {
+  background-color: rgb(236, 72, 12);
+  border: 2px solid black;
+  border-radius: 15px;
+  box-shadow: 1px 1px rgba(0, 0, 0);
+  padding: 0 10px;
+  margin: 5px;
+  color: white;
+}
+.open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  box-shadow: 2px 4px black;
+  border: 2px solid black;
+  padding: 30px 0;
+  margin: 10px;
+  border-radius: 50%;
+  background-color: lightblue;
+  width: 180px;
+  height: 180px;
+  text-align: center;
+}
+.occupied {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  box-shadow: 2px 4px black;
+  border: 2px solid black;
+  padding: 30px 0;
+  margin: 10px;
+  border-radius: 50%;
+  background-color: coral;
+  width: 180px;
+  height: 180px;
+  text-align: center;
+}
+
+p {
+  margin: 0px;
+  padding: 0px;
+  font-size: 12px;
+}

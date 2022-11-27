@@ -65,6 +65,7 @@ function Search() {
           <fieldset>
             <label htmlFor="movile_number">Mobile Number:</label>
             <input
+              type="tel"
               name="mobile_number"
               id="mobile_number"
               placeholder="Enter a customer's phone number"

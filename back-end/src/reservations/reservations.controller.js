@@ -90,11 +90,11 @@ function reservationNotFinished(rq, res, next) {
 
 // check to make sure date isn't Tuesday or date/time in the past
 function validateDateTime(req, res, next) {
-  const { data: {reservation_date, reservation_time} } = req.body;
+  const {
+    data: { reservation_date, reservation_time },
+  } = req.body;
   // dateREquest is an object 2022-05-23T12:05:00.000z
-  const dateRequest = new Date(
-    `${reservation_date} ${reservation_time}`
-  );
+  const dateRequest = new Date(`${reservation_date} ${reservation_time}`);
   //string time HH:MM
   const timeRequest = reservation_time;
   //today is an object 2022-05-23T12:05:00.000z
@@ -105,7 +105,7 @@ function validateDateTime(req, res, next) {
       status: 400,
       message: "Sorry, we're closed on Tuesdays!",
     });
-  } 
+  }
   // no reservations if not open
   if (timeRequest < "10:30" || timeRequest > "21:30") {
     return next({
@@ -124,8 +124,7 @@ function validateDateTime(req, res, next) {
   if (dateRequest < today && day === 2) {
     return next({
       status: 400,
-      message:
-        "We don't accept reservations on Tuesdays, as we are closed",
+      message: "We don't accept reservations on Tuesdays, as we are closed",
     });
   }
 

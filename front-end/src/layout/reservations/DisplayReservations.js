@@ -1,22 +1,8 @@
 import React from "react";
-//import { useState } from "react";
-//import { updateReservationStatus } from "../../utils/api";
-//import loadDashboard from "../../dashboard/Dashboard";
-//import ErrorAlert from "../ErrorAlert";
-import {formatAsDate, formatAsTime} from "../../utils/date-time"
-
-const style = {
-  border: "1px solid black",
-  backgroundColor: "white",
-  boxShadow: "3px 3px black",
-  margin: "10px",
-  padding: "10px",
-  width: "250px",
-  //height: "165px",
-};
+import { formatAsDate, formatAsTime } from "../../utils/date-time";
+import "./DisplayReservations.css";
 
 function DisplayReservations({ reservations, search = false, handleCancel }) {
-
   function formatMobile(number) {
     number = number.replaceAll("-", "");
     return (
@@ -26,7 +12,7 @@ function DisplayReservations({ reservations, search = false, handleCancel }) {
 
   return (
     <>
-      <div style={{ display: "flex", flex: "1", flexWrap: "wrap" }}>
+      <div className="cardsContainer">
         {reservations.map((reservation) => {
           if (
             reservation.status === "booked" ||
@@ -34,47 +20,46 @@ function DisplayReservations({ reservations, search = false, handleCancel }) {
             search
           ) {
             return (
-              <div key={reservation.reservation_id} style={style}>
-                <b>{formatAsTime(reservation.reservation_time)}</b>
-                <span>- {formatAsDate(reservation.reservation_date)}</span>
-                <br />
-                {reservation.first_name} {reservation.last_name}
-                <br />
-                {formatMobile(reservation.mobile_number)}
-                <br />
-                <span>Party of {reservation.people}</span>
-                <br />
-                <b>
-                  <p data-reservation-id-status={reservation.reservation_id}>
-                    {reservation.status}
-                  </p>
-                </b>
-                <br />
-                {reservation.status === "booked" ? (
-                  <div>
-                    <a
-                      href={`/reservations/${reservation.reservation_id}/seat`}
-                    >
-                      <button className="navigate" type="button">
-                        Seat
+              <div key={reservation.reservation_id} className="card">
+                <div>
+                  <b>{formatAsTime(reservation.reservation_time)}</b>
+                  <span>- {formatAsDate(reservation.reservation_date)}</span>
+                </div>
+                <div>
+                  {reservation.first_name} {reservation.last_name}
+                </div>
+                <div>{formatMobile(reservation.mobile_number)}</div>
+                <div>Party of {reservation.people}</div>
+                <div data-reservation-id-status={reservation.reservation_id}>
+                  <b>{reservation.status}</b>
+                </div>
+                <div>
+                  {reservation.status === "booked" ? (
+                    <div>
+                      <a
+                        href={`/reservations/${reservation.reservation_id}/seat`}
+                      >
+                        <button className="navigate" type="button">
+                          Seat
+                        </button>
+                      </a>
+                      <a
+                        href={`/reservations/${reservation.reservation_id}/edit`}
+                      >
+                        <button className="navigate" type="button">
+                          Edit
+                        </button>
+                      </a>
+                      <button
+                        className="navigate"
+                        data-reservation-id-cancel={reservation.reservation_id}
+                        onClick={() => handleCancel(reservation.reservation_id)}
+                      >
+                        Cancel
                       </button>
-                    </a>
-                    <a
-                      href={`/reservations/${reservation.reservation_id}/edit`}
-                    >
-                      <button className="navigate" type="button">
-                        Edit
-                      </button>
-                    </a>
-                    <button
-                      className="navigate"
-                      data-reservation-id-cancel={reservation.reservation_id}
-                      onClick={() => handleCancel(reservation.reservation_id)}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                ) : null}
+                    </div>
+                  ) : null}
+                </div>
               </div>
             );
           }
