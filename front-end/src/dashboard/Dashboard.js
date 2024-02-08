@@ -93,13 +93,13 @@ function Dashboard({ date, setDate }) {
   };
 
   const days = [
+    "Sunday",
     "Monday",
     "Tuesday",
     "Wednesday",
     "Thursday",
     "Friday",
     "Saturday",
-    "Sunday",
   ];
   const months = [
     null,
