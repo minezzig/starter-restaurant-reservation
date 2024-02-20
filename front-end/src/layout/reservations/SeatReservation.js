@@ -102,8 +102,8 @@ function SeatReservation() {
             </select>
           </fieldset>
           <fieldset>
-            <button type="submit">Submit</button>
-            <button type="reset" onClick={() => history.goBack()}>
+            <button type="submit" className="navigation">Submit</button>
+            <button type="reset" className="navigation" onClick={() => history.goBack()}>
               Cancel
             </button>
           </fieldset>

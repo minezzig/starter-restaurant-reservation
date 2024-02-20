@@ -82,7 +82,7 @@ function ReservationForm({ formData, handleChange, handleSubmit, purpose }) {
           </fieldset>
           <fieldset>
             <button className="navigate" type="submit">
-              {purpose ? "submit" : "Reserve"}
+              {purpose ? "Submit" : "Reserve"}
             </button>
             <button
               className="navigate"
