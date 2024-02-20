@@ -34,7 +34,7 @@ function NewTable() {
 
   return (
     <div>
-      <h1>New Table Page</h1>
+      <h1>New Table</h1>
       <ErrorAlert error={errorMessage} />
       <TableForm
         formData={formData}

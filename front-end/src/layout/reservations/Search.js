@@ -75,7 +75,7 @@ function Search() {
             />
           </fieldset>
           <fieldset>
-            <button type="submit">Find</button>
+            <button type="submit" className="navigate">Find</button>
           </fieldset>
         </form>
       </div>

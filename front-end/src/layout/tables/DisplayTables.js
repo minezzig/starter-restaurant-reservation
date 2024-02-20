@@ -4,7 +4,7 @@ import "./DisplayTables.css";
 function DisplayTables({ tables, handleFinish }) {
   return (
     <>
-      <h1>table display</h1>
+      <h1>Tables</h1>
       <div className="tableContainer">
         {tables.length ? (
           tables.map((table) => (

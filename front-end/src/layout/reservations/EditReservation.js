@@ -63,8 +63,7 @@ function EditReservation() {
 
   return (
     <>
-      <h1>Edit a Reservation</h1>
-      <h2>Old reservation form</h2>
+      <h1>Edit Reservation</h1>
       <ErrorAlert error={errorMessage} />
       <ReservationForm
         formData={formData}

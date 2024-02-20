@@ -1,11 +1,12 @@
-/* .navigate {
+.navigate {
   background-color: cornflowerblue;
-  border: 2px solid black;
+  border: 1px solid black;
   border-radius: 5px;
   box-shadow: 3px 3px black;
   padding: 25x;
   margin: 5px;
-} */
+  color: white;
+}
 .navigate:focus {
   outline: 0;
 }

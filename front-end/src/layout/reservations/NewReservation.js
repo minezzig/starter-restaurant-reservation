@@ -44,7 +44,7 @@ function NewReservation() {
 
   return (
     <div>
-      <h1>New Reservation Page</h1>
+      <h1>New Reservation</h1>
       <ErrorAlert error={errorMessage} />
       <ReservationForm
         formData={formData}

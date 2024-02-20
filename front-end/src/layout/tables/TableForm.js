@@ -6,11 +6,10 @@ function TableForm({ formData, handleChange, handleSubmit }) {
 
   return (
     <>
-      <h2>TABLE FORM</h2>
       <div>
         <form onSubmit={handleSubmit}>
           <fieldset>
-            <label htmlFor="table_name">Table Name</label>
+            <label htmlFor="table_name">Table Name:</label>
             <input
               type="text"
               id="table_name"
@@ -34,8 +33,14 @@ function TableForm({ formData, handleChange, handleSubmit }) {
             />
           </fieldset>
           <fieldset>
-            <button type="submit">Submit</button>
-            <button type="reset" onClick={() => history.goBack()}>
+            <button type="submit" className="navigate">
+              Submit
+            </button>
+            <button
+              type="reset"
+              className="navigate"
+              onClick={() => history.goBack()}
+            >
               Cancel
             </button>
           </fieldset>
