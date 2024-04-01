@@ -40,7 +40,7 @@
 
 @media screen and (min-width: 768px) {
     .dropdown {
-        opacity: 1;
+        opacity: 100%;
       }
     .hamburger {
         display: none;
