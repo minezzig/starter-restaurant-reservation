@@ -19,6 +19,7 @@ function NewReservation() {
 
   const [formData, setFormData] = useState(defaultForm);
 
+  // allow user to edit input fields
   const handleChange = (event) => {
     setFormData((reservation) => ({
       ...reservation,
@@ -26,11 +27,10 @@ function NewReservation() {
     }));
   };
 
+  // save reservation, reset form, and redirect to dashboard to view reservation date page
   const handleSubmit = async (event) => {
     event.preventDefault();
     const abortController = new AbortController();
-    //const newResDate = formData.reservation_date; //!?!?!?!?! is this messing up my date?
-    //formData.reservation_date = new Date(newResDate);
     formData.people = parseInt(formData.people);
     try {
       await createReservation(formData, abortController.signal);
@@ -44,7 +44,6 @@ function NewReservation() {
 
   return (
     <div>
-      <h1>New Reservation</h1>
       <ErrorAlert error={errorMessage} />
       <ReservationForm
         formData={formData}

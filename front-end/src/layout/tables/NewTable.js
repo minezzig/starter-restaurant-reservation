@@ -11,6 +11,7 @@ function NewTable() {
   const [formData, setFormData] = useState(defaultForm);
   const [errorMessage, setErrorMessage] = useState(null);
 
+  // allows for user input
   const handleChange = (event) => {
     setFormData((tables) => ({
       ...tables,
@@ -18,6 +19,7 @@ function NewTable() {
     }));
   };
 
+  // create a new table and direct user back to the dashboard
   const handleSubmit = async (event) => {
     event.preventDefault();
     const abortController = new AbortController();
@@ -34,7 +36,7 @@ function NewTable() {
 
   return (
     <div>
-      <h1>New Table</h1>
+      <h3>New Table</h3>
       <ErrorAlert error={errorMessage} />
       <TableForm
         formData={formData}

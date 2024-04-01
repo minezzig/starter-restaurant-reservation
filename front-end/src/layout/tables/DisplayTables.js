@@ -2,14 +2,14 @@ import React from "react";
 import "./DisplayTables.css";
 
 function DisplayTables({ tables, handleFinish }) {
+  // display the tables or if not found, Loading...
   return (
     <>
-      <h1>Tables</h1>
       <div className="tableContainer">
         {tables.length ? (
           tables.map((table) => (
             <div
-              className={table.reservation_id ? "occupied" : "open"}
+              className={`${table.reservation_id ? "occupied" : "open"} table`}
               key={table.table_id}
             >
               <p>Table Name: {table.table_name}</p>

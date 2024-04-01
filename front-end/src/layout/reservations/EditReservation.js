@@ -19,8 +19,10 @@ function EditReservation() {
   const [errorMessage, setErrorMessage] = useState(false);
   const history = useHistory();
 
+  // run at start or when reservation_id changes
   useEffect(() => {
     const abortController = new AbortController();
+    // retrieve the reservation you want to edit
     async function getReservation() {
       try {
         const result = await readReservation(
@@ -39,6 +41,7 @@ function EditReservation() {
     return () => abortController.abort();
   }, [reservation_id]);
 
+  // allow user to edit fields
   const handleChange = (event) => {
     setFormData((reservation) => ({
       ...reservation,
@@ -46,6 +49,7 @@ function EditReservation() {
     }));
   };
 
+  // save the edited reservation
   const handleSubmit = async (event) => {
     event.preventDefault();
     const abortController = new AbortController();

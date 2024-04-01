@@ -77,7 +77,7 @@ function validStatusUpdateProperty(req, res, next) {
   next();
 }
 
-function reservationNotFinished(rq, res, next) {
+function reservationNotFinished(req, res, next) {
   const { reservation } = res.locals;
   if (reservation.status === "finished") {
     next({
@@ -141,7 +141,7 @@ async function reservationExists(req, res, next) {
   next({ status: 404, message: `Reservation ${reservation_id} doesn't exist` });
 }
 
-// ---------------- HTTP requests ---------------- //
+// ---------------- HTTP requests ---------------- => // 
 async function list(req, res) {
   const { date } = req.query;
   const { mobile_number } = req.query;

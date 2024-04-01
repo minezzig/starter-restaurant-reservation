@@ -11,10 +11,12 @@ function Search() {
   const [errorMessage, setErrorMessage] = useState(null);
   const noResults = "No reservations found";
 
+  // allow user to search
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
+  // cancel a reservation by updating selected reservation to "cancelled"
   const handleCancel = async (reservation_id) => {
     if (
       window.confirm(
@@ -44,6 +46,7 @@ function Search() {
     }
   };
 
+  // search database for matching mobile number entered by user
   const handleSubmit = async (event) => {
     event.preventDefault();
     const { mobile_number } = formData;
@@ -59,7 +62,7 @@ function Search() {
 
   return (
     <>
-      <h1>Search for Reservation</h1>
+      <h3>Search for Reservation</h3>
       <div>
         <form onSubmit={handleSubmit}>
           <fieldset>

@@ -3,6 +3,7 @@ import { formatAsDate, formatAsTime } from "../../utils/date-time";
 import "./DisplayReservations.css";
 
 function DisplayReservations({ reservations, search = false, handleCancel }) {
+  // format mobile numbrer as 123-456-7890
   function formatMobile(number) {
     number = number.replaceAll("-", "");
     return (

@@ -17,6 +17,7 @@ function SeatReservation() {
   useEffect(() => {
     const abortController = new AbortController();
 
+    // retrieve the tables
     async function getTables() {
       try {
         const response = await listTables(abortController.signal);
@@ -29,6 +30,7 @@ function SeatReservation() {
       }
     }
 
+    // retrieve the reservation you want to seat
     async function getReservation() {
       try {
         const response = await readReservation(

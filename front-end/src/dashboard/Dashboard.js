@@ -127,12 +127,9 @@ function Dashboard({ date, setDate }) {
 
   return (
     <main>
-      <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">
-          Reservations for: {days[day]}, {months[dateString[0]]} {dateString[1]}
-          , {dateString[2]}
-        </h4>
+      <div className="d-md-flex flex-column mb-3">
+        <p className="mb-0">Reservations for:</p>
+        <h4>{days[day]}, {months[dateString[0]]} {dateString[1]}, {dateString[2]}</h4>
       </div>
 
       <div className="navigation">
