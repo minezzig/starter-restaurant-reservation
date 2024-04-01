@@ -5,7 +5,7 @@
   transition: .3s all;
 }
 .menuOpen {
-    opacity: 100%;
+    opacity: 1;
     height: 170px;
 }
 .hamburger {
@@ -40,7 +40,7 @@
 
 @media screen and (min-width: 768px) {
     .dropdown {
-        opacity: 100%;
+        opacity: 1;
       }
     .hamburger {
         display: none;
