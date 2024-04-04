@@ -10,16 +10,12 @@ function DisplayReservations({ reservations, search = false, handleCancel }) {
       number.slice(0, 3) + "-" + number.slice(3, 6) + "-" + number.slice(6)
     );
   }
+  reservations = reservations.filter(res => res.status === "booked" || res.status === "seated");
 
   return (
     <>
       <div className="cardsContainer">
-        {reservations.map((reservation) => {
-          if (
-            reservation.status === "booked" ||
-            reservation.status === "seated" ||
-            search
-          ) {
+        {reservations.length ? reservations.map((reservation) => {
             return (
               <div key={reservation.reservation_id} className="card">
                 <div>
@@ -63,9 +59,7 @@ function DisplayReservations({ reservations, search = false, handleCancel }) {
                 </div>
               </div>
             );
-          }
-          return null;
-        })}
+        }) : "No reserverations for today"}
       </div>
     </>
   );
